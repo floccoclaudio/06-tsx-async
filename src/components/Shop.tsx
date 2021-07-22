@@ -1,15 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
-
-const StyledButton = styled('button')`
-border:1px solid black;
-padding:5px;`
-
+import React from "react";
+import styled from "styled-components";
+import { fetchInventory } from "../features/mainSlice";
+const StyledButton = styled("button")`
+  border: 1px solid black;
+  padding: 5px;
+`;
 
 const Shop = () => {
-    return (
-        <StyledButton>Fetch item List from fake store API</StyledButton>
-    )
-}
+  return (
+    <StyledButton
+      onClick={() => {
+        fetchInventory();
+      }}></StyledButton>
+  );
+};
 
-export default Shop
+export default Shop;
