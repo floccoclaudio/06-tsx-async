@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
 import Shop from './Shop'
 // import Navbar from './Navbar'
 const StyledAppWrapper = styled('div')`
@@ -10,15 +10,9 @@ const StyledAppWrapper = styled('div')`
 
 const App: React.FC = () => {
     return (
-        <BrowserRouter>
-            <StyledAppWrapper>
-                <Switch>
-                    <Route path="/" exact>
-                        <Shop />
-                    </Route>
-                </Switch>
-            </StyledAppWrapper>
-        </BrowserRouter>
+        <StyledAppWrapper>
+            <Shop />
+        </StyledAppWrapper>
     )
 }
 

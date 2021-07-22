@@ -23,36 +23,35 @@ const initialMainState: MainInitialStateType = {
     isSuccess: false,
 }
 
-export const fetchInventory = createAsyncThunk<ProductType[], void, { state: RootState, rejectWithValue: string }>(
-    'fetchItems',
-    async (_, { rejectWithValue }) => {
+export const fetchInventory = createAsyncThunk<ProductType[], void, { state: RootState }>(
+    'fetchItems', async () => {
         try {
-            let response = await fetch('https://fakestoreapi.com/products/')
+            let response = await fetch('https://fakestoreapi.com/products')
             return response.json()
         } catch (err) {
-            rejectWithValue(err)
+            return err as string
         }
-
     }
 )
+
 
 export const mainSlice = createSlice({
     name: 'mainSlice',
     initialState: initialMainState,
     reducers: {
     },
-    extraReducers:
-        builder => {
-            builder.addCase(fetchInventory.pending, state => {
-                state.isLoading = true
-            }).addCase(fetchInventory.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.inventory = action.payload
+    extraReducers: builder => {
+        builder
+            .addCase(fetchInventory.pending, state => { state.isLoading = true })
+            .addCase(fetchInventory.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.inventory = action.payload;
             }).addCase(fetchInventory.rejected, state => {
-                state.isLoading = false
-                state.isError = true
+                state.isLoading = false;
+                state.isError = true;
             })
-        }
+    }
 })
 
 export default mainSlice.reducer
