@@ -1,20 +1,28 @@
 import React from "react";
 import styled from "styled-components";
-import { useAppDispatch } from "../app/hooks";
-import { fetchInventory } from "../features/mainSlice";
 
-const StyledButton = styled("button")`
-  border: 1px solid black;
-  padding: 5px;
-`;
+
+const StyledTitle = styled('div')`
+width:25%;
+margin:20px auto;
+background-color:#F8FFE5;
+text-align: center;
+padding:10px;
+`
+
+const StyledSeparator = styled('div')`
+border-top: 5px solid #1B9AAA;
+margin-top:50px;
+`
+
+
+
+
 
 const Shop = () => {
-
-  const dispatch = useAppDispatch()
-
-  return (<StyledButton onClick={() => {
-    dispatch(fetchInventory())
-  }}>Fetch from fakeStore API</StyledButton>);
-};
-
+  return <>
+    <StyledTitle >Availble Items</StyledTitle>
+    <StyledSeparator />
+  </>
+}
 export default Shop;
