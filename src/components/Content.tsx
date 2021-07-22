@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 const StyledContentDiv = styled('div')`
-    background-color: turquoise;
+    background-color: #F8FFE5;
     border:1px solid black;
     padding:5px;
     margin:5px;
-    grid-column: 2 / 5;
-    grid-row: 1 / 5;
+    grid-column: 2 / 15;
+    grid-row: 1 / 6;
 `
 
 
