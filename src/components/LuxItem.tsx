@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ProductDetailsItemsEntity } from '../features/mainSlice'
+import { ProductDetailsItemsEntity } from '../features/sroSlice'
 interface LuxItemProps {
     props: ProductDetailsItemsEntity
 }
