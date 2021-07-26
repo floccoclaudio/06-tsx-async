@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from '../app/store'
 //#region sro type
+
+// single product interface
 export interface ProductDetailsItemsEntity {
     brandDescription: string;
     styleName?: string | null;
@@ -14,10 +15,13 @@ export interface ProductDetailsItemsEntity {
     numberItems: number;
     price: number;
 }
+
+//epcCodes
 export interface EpcCodesEntity {
     epcCode: string;
     epcStatus: string;
 }
+
 export interface Sro {
     productDetailsItems?: (ProductDetailsItemsEntity)[] | null;
 
@@ -1324,25 +1328,32 @@ export const sroSlice = createSlice({
     name: 'mainSlice',
     initialState: initialMainState,
     reducers: {
-        handleFound: (state) => {
+        handleResponse: (state) => {
+            state.products.unexpected = state.sroResponse.productDetailsItems?.map(item => ({
+                ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "Missing")
+            })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
             state.products.notFound = state.sroResponse.productDetailsItems?.map(item => ({
-                ...item, epcCodes: item.epcCodes?.filter((code) => code.epcStatus === "In stock")
-            }
-            ))
-        }
+                ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "In stock")
+            })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
+            // state.sroResponse.productDetailsItems?.map(item=>{
+
+            // })
+        },
+
     }
 }
 )
-export const { handleFound } = sroSlice.actions
+
+export const { handleResponse } = sroSlice.actions
 export default sroSlice.reducer
 
 
 
 
 
-            // state.sroResponse.productDetailsItems?.map((item) => {
-            //     item.epcCodes?.map((code) => {
-            //         switch (code.epcStatus) {
+// state.sroResponse.productDetailsItems?.map((item) => {
+    //     item.epcCodes?.map((code) => {
+        //         switch (code.epcStatus) {
             //             case 'Missing':
             //                 state.products.unexpected.push({ epcCode: code.epcCode, epcStatus: code.epcStatus })
             //                 break;
@@ -1350,37 +1361,44 @@ export default sroSlice.reducer
             //                 state.products.notFound.push(code.epcCode)
             //         }
             //         // if (code.epcStatus === "Missing") {
-            //     state.products.found.push(code)
-            // }
+                //     state.products.found.push(code)
+                // }
 
-            // });
-            // })
-        //     const found = state.sroResponse.productDetailsItems!.filter(
-        //         item => { 
-        //             return item.epcCodes?.map(
-        //                 code => { 
-        //                     if (code.epcStatus === "Missing") { 
-        //                         return code.epcCode 
-        //                     } 
-        //                 }) 
-        //             }
-        //             )
-        //     state.products.found.push(found)
-        // }
+                // });
+                // })
+                //     const found = state.sroResponse.productDetailsItems!.filter(
+                    //         item => { 
+                        //             return item.epcCodes?.map(
+                            //                 code => { 
+                                //                     if (code.epcStatus === "Missing") { 
+                                    //                         return code.epcCode 
+                                    //                     } 
+                                    //                 }) 
+                                    //             }
+                                    //             )
+                                    //     state.products.found.push(found)
+                                    // }
 
 
-        // handleCodes:(state )=>{
-        //     state.sroResponse.productDetailsItems?.map(item =>{
-        //         item.epcCodes?.map(code => { 
-        //             if(code.epcStatus === "In stock"){
-        //                 state.products.notFound.push(code.epcCode)
-        //             } else if(code.epcStatus === "Missing"){
-        //             workingObjects = {
-        //                 ...workingObjects, missingStockCodes:
-        //             }
-        //         }
-        //         return workingObjects
-        //     }})
+                                    // handleCodes:(state )=>{
+                                        //     state.sroResponse.productDetailsItems?.map(item =>{
+                                            //         item.epcCodes?.map(code => { 
+                                                //             if(code.epcStatus === "In stock"){
+                                                    //                 state.products.notFound.push(code.epcCode)
+                                                    //             } else if(code.epcStatus === "Missing"){
+                                                        //             workingObjects = {
+                                                            //                 ...workingObjects, missingStockCodes:
+                                                            //             }
+                                                            //         }
+                                                            //         return workingObjects
+                                                            //     }})
 
-        //     })
-        // piglia sro response da state => costruisci gli array
+                                                            //     })
+
+// piglia sro response da state => costruisci gli array
+        // handleFound: (state) => {
+ //     state.products.notFound = state.sroResponse.productDetailsItems?.map(item => ({
+//         ...item, epcCodes: item.epcCodes?.filter((code) => code.epcStatus === "In stock")
+          //     }
+                                                            //     ))
+                                                            // }

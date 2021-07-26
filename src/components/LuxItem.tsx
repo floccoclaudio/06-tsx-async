@@ -1,15 +1,12 @@
-import React from 'react'
+import React from "react";
 
-import { ProductDetailsItemsEntity } from '../features/sroSlice'
+import { ProductDetailsItemsEntity } from "../features/sroSlice";
 interface LuxItemProps {
-    props: ProductDetailsItemsEntity
+  props: ProductDetailsItemsEntity;
 }
 
+const LuxItem: React.FC<LuxItemProps> = (props) => {
+  return <p>item</p>;
+};
 
-const LuxItem: React.FC = (props) => {
-    return (
-        <p></p>
-    )
-}
-
-export default LuxItem
+export default LuxItem;
