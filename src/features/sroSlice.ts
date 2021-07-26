@@ -24,7 +24,6 @@ export interface EpcCodesEntity {
 
 export interface Sro {
     productDetailsItems?: (ProductDetailsItemsEntity)[] | null;
-
 }
 //#endregion
 
@@ -1323,7 +1322,6 @@ const initialMainState: MainInitialStateType = {
     }
 }
 
-
 export const sroSlice = createSlice({
     name: 'mainSlice',
     initialState: initialMainState,
@@ -1335,11 +1333,7 @@ export const sroSlice = createSlice({
             state.products.notFound = state.sroResponse.productDetailsItems?.map(item => ({
                 ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "In stock")
             })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
-            // state.sroResponse.productDetailsItems?.map(item=>{
-
-            // })
         },
-
     }
 }
 )

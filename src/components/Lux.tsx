@@ -9,6 +9,7 @@ const StyledButton = styled("button")`
   border: 100px solid black;
   height: 300px;
   background-color: red;
+  width: 100%;
 `;
 
 const Content: React.FC = () => {
