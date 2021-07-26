@@ -33,8 +33,8 @@ interface MainInitialStateType {
     }
 }
 
-//#region sro response
 const initialMainState: MainInitialStateType = {
+    //#region sro response
     sroResponse: {
         "productDetailsItems": [
             {
@@ -1329,6 +1329,16 @@ export const sroSlice = createSlice({
                 ...item, epcCodes: item.epcCodes?.filter((code) => code.epcStatus === "In stock")
             }
             ))
+        }
+    }
+}
+)
+export const { handleFound } = sroSlice.actions
+export default sroSlice.reducer
+
+
+
+
 
             // state.sroResponse.productDetailsItems?.map((item) => {
             //     item.epcCodes?.map((code) => {
@@ -1345,7 +1355,6 @@ export const sroSlice = createSlice({
 
             // });
             // })
-        }
         //     const found = state.sroResponse.productDetailsItems!.filter(
         //         item => { 
         //             return item.epcCodes?.map(
@@ -1374,12 +1383,4 @@ export const sroSlice = createSlice({
         //     }})
 
         //     })
-    }
-    // piglia sro response da state => costruisci gli array
-}
-)
-export const { handleFound } = sroSlice.actions
-export default sroSlice.reducer
-
-
-
+        // piglia sro response da state => costruisci gli array
