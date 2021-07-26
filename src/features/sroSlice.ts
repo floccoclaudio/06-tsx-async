@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+
+
 //#region sro type
 
 // single product interface

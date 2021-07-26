@@ -1,15 +1,44 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import LuxItem from "./LuxItem";
 import { handleResponse } from "../features/sroSlice";
+
 const StyledWrapper = styled("div")``;
 
 const StyledButton = styled("button")`
-  border: 100px solid black;
-  height: 300px;
+  border: 5px solid black;
   background-color: red;
   width: 100%;
+  font-family: monospace;
+  font-weight: 800;
+  font-size: 100px;
+`;
+const StyledCommandsWrapper = styled("div")`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StyledListsWrapper = styled("div")`
+  & > * {
+    box-sizing: border-box;
+  }
+`;
+
+const StyledItemsList = styled("div")`
+  width: 100%;
+  padding: 10px;
+`;
+
+const StyledTitle = styled("div")`
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  border: 1px solid black;
 `;
 
 const Content: React.FC = () => {
@@ -18,12 +47,26 @@ const Content: React.FC = () => {
   const dispatch = useAppDispatch();
   return (
     <StyledWrapper>
-      <StyledButton onClick={() => dispatch(handleResponse())}>
-        Do you really want to handle that respnse?????
-      </StyledButton>
-      {products.notFound?.map((notFound, index) => (
-        <LuxItem key={`${index}-${notFound.upcCode}`} props={notFound} />
-      ))}
+      <StyledCommandsWrapper>
+        <StyledButton onClick={() => dispatch(handleResponse())}>
+          Handle and Sort Response
+        </StyledButton>
+      </StyledCommandsWrapper>
+      <StyledListsWrapper>
+        <StyledItemsList>
+          <StyledTitle>Not Found</StyledTitle>
+          {products.notFound?.map((notFound, index) => (
+            <LuxItem key={`${index}-${notFound.upcCode}`} props={notFound} />
+          ))}
+          <StyledTitle>Unexpected</StyledTitle>
+          {products.unexpected?.map((unexpected, index) => (
+            <LuxItem
+              key={`${index}-${unexpected.upcCode}`}
+              props={unexpected}
+            />
+          ))}
+        </StyledItemsList>
+      </StyledListsWrapper>
     </StyledWrapper>
   );
 };
