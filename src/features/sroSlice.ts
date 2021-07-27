@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, current } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 //#region sro type
 
 // single product interface
@@ -1352,9 +1352,8 @@ export const sroSlice = createSlice({
                 //     ...targetUpc,
                 //     epcCodes: targetUpc.epcCodes.filter(({ epcCode }) => epcCode !== action.payload.epcCode)
                 // }
-
+                // state.products.notFound[targetUpcIndex].epcCodes = targetUpc.epcCodes.filter(code => code.epcCode !== action.payload.epcCode)
                 state.products.notFound[targetUpcIndex].epcCodes = state.products.notFound[targetUpcIndex].epcCodes.filter(code => code.epcCode !== action.payload.epcCode)
-
             }
         }
     }
