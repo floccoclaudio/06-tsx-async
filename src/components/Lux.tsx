@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import LuxItem from "./LuxItem";
 import { handleResponse } from "../features/sroSlice";

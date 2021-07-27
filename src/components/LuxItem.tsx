@@ -1,6 +1,7 @@
 import React from "react";
 import { ProductDetailsItemsEntity } from "../features/sroSlice";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
+
 interface LuxItemProps {
   props: ProductDetailsItemsEntity;
 }
@@ -21,10 +22,8 @@ const StyledUpc = styled("div")`
   padding-top: 3px;
   font-size: 13px;
 `;
-
 const StyledEpcWrapper = styled("div")`
   border: 1px solid grey;
-  width: 50%;
   padding: 2px;
   font-size: 13px;
 `;
@@ -37,21 +36,19 @@ const StyledCodeLine = styled("div")`
   padding: 2px;
 `;
 const StyledEpcCode = styled("div")`
-  font-size: 11px;
-  border: 1px solid grey;
-  background-color: #8fc8fa;
-  border-radius: 20px;
-  padding: 2px;
+  font-size: 15px;
+  border-radius: 10px;
+  padding: 8px;
 `;
 const StyledButton = styled("button")`
   transition: all;
   color: black;
   background-color: white;
-  font-size: 10px;
+  font-size: 15px;
   cursor: pointer;
   border: none;
-  margin: 2px;
-  border: 1px solid black;
+  margin: 5px;
+  border: 2px solid grey;
   border-radius: 5px;
   &:hover {
     transition-duration: 2s;
