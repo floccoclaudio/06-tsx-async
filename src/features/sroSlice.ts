@@ -1,6 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-
+import { createSlice, PayloadAction, current } from '@reduxjs/toolkit'
 //#region sro type
 
 // single product interface
@@ -13,7 +11,7 @@ export interface ProductDetailsItemsEntity {
     colorCode?: string | null;
     sizeCode?: string | null;
     brandCode: string;
-    epcCodes?: (EpcCodesEntity)[] | null;
+    epcCodes: (EpcCodesEntity)[];
     numberItems: number;
     price: number;
 }
@@ -25,16 +23,16 @@ export interface EpcCodesEntity {
 }
 
 export interface Sro {
-    productDetailsItems?: (ProductDetailsItemsEntity)[] | null;
+    productDetailsItems: (ProductDetailsItemsEntity)[];
 }
 //#endregion
 
 interface MainInitialStateType {
     sroResponse: Sro;
     products: {
-        notFound?: ProductDetailsItemsEntity[],
-        unexpected?: ProductDetailsItemsEntity[],
-        found?: ProductDetailsItemsEntity[]
+        notFound: ProductDetailsItemsEntity[],
+        unexpected: ProductDetailsItemsEntity[],
+        found: ProductDetailsItemsEntity[]
     }
 }
 
@@ -1329,72 +1327,41 @@ export const sroSlice = createSlice({
     initialState: initialMainState,
     reducers: {
         handleResponse: (state) => {
-            state.products.unexpected = state.sroResponse.productDetailsItems?.map(item => ({
+            state.products.unexpected = state.sroResponse.productDetailsItems.map(item => ({
                 ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "Missing")
             })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
-            state.products.notFound = state.sroResponse.productDetailsItems?.map(item => ({
+            state.products.notFound = state.sroResponse.productDetailsItems.map(item => ({
                 ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "In stock")
             })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
         },
+        addToFound: (state, action: PayloadAction<ProductDetailsItemsEntity>) => {
+            state.products.found?.push(action.payload)
+        },
+        removeFromNotFound: (state, action: PayloadAction<{ upcCode: string; epcCode: string }>) => {
+
+            const targetUpcIndex = state.products.notFound?.findIndex(code => code.upcCode === action.payload.upcCode);
+            // const targetUpc = state.products.notFound?.find(code => code.upcCode === action.payload.upcCode);
+
+
+            if (targetUpcIndex !== -1) {
+                // const epcToRemove = state.products.notFound[targetUpcIndex].epcCodes?.findIndex(removeCode => removeCode.epcCode === action.payload.epcCode)
+                // if (epcToRemove !== undefined) {
+                // state.products.notFound[targetUpcIndex].epcCodes?.splice(epcToRemove, 1)
+                // }
+                // state.products.notFound[targetUpcIndex] = {
+                //     ...targetUpc,
+                //     epcCodes: targetUpc.epcCodes.filter(({ epcCode }) => epcCode !== action.payload.epcCode)
+                // }
+
+                state.products.notFound[targetUpcIndex].epcCodes = state.products.notFound[targetUpcIndex].epcCodes.filter(code => code.epcCode !== action.payload.epcCode)
+
+            }
+        }
     }
 }
 )
 
-export const { handleResponse } = sroSlice.actions
+export const { handleResponse, addToFound, removeFromNotFound } = sroSlice.actions
 export default sroSlice.reducer
 
 
-
-
-
-// state.sroResponse.productDetailsItems?.map((item) => {
-    //     item.epcCodes?.map((code) => {
-        //         switch (code.epcStatus) {
-            //             case 'Missing':
-            //                 state.products.unexpected.push({ epcCode: code.epcCode, epcStatus: code.epcStatus })
-            //                 break;
-            //             case 'In stock':
-            //                 state.products.notFound.push(code.epcCode)
-            //         }
-            //         // if (code.epcStatus === "Missing") {
-                //     state.products.found.push(code)
-                // }
-
-                // });
-                // })
-                //     const found = state.sroResponse.productDetailsItems!.filter(
-                    //         item => { 
-                        //             return item.epcCodes?.map(
-                            //                 code => { 
-                                //                     if (code.epcStatus === "Missing") { 
-                                    //                         return code.epcCode 
-                                    //                     } 
-                                    //                 }) 
-                                    //             }
-                                    //             )
-                                    //     state.products.found.push(found)
-                                    // }
-
-
-                                    // handleCodes:(state )=>{
-                                        //     state.sroResponse.productDetailsItems?.map(item =>{
-                                            //         item.epcCodes?.map(code => { 
-                                                //             if(code.epcStatus === "In stock"){
-                                                    //                 state.products.notFound.push(code.epcCode)
-                                                    //             } else if(code.epcStatus === "Missing"){
-                                                        //             workingObjects = {
-                                                            //                 ...workingObjects, missingStockCodes:
-                                                            //             }
-                                                            //         }
-                                                            //         return workingObjects
-                                                            //     }})
-
-                                                            //     })
-
-// piglia sro response da state => costruisci gli array
-        // handleFound: (state) => {
- //     state.products.notFound = state.sroResponse.productDetailsItems?.map(item => ({
-//         ...item, epcCodes: item.epcCodes?.filter((code) => code.epcStatus === "In stock")
-          //     }
-                                                            //     ))
-                                                            // }
