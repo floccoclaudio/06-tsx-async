@@ -6,7 +6,7 @@ import { handleResponse } from "../features/sroSlice";
 
 const StyledWrapper = styled("div")``;
 
-const StyledButton = styled("button")`
+export const StyledDangerousButton = styled("button")`
   border: 5px solid black;
   background-color: red;
   width: 100%;
@@ -42,9 +42,9 @@ const Content: React.FC = () => {
   return (
     <StyledWrapper>
       <StyledCommandsWrapper>
-        <StyledButton onClick={() => dispatch(handleResponse())}>
+        {/* <StyledDangerousButton onClick={() => dispatch(handleResponse())}>
           Handle and Sort Response
-        </StyledButton>
+        </StyledDangerousButton> */}
       </StyledCommandsWrapper>
       <StyledListsWrapper>
         <StyledItemsList>

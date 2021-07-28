@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { useAppDispatch } from "../app/hooks";
 import { fetchInventory } from "../features/mainSlice";
+import { handleResponse } from "../features/sroSlice";
 
+import { StyledDangerousButton } from "./Lux";
 const StyledSideBar = styled("div")`
-  background-color: #75da9f;
+  background-color: #9bf6ff;
   border: 1px solid black;
   padding: 5px;
   margin: 5px;
@@ -30,9 +32,14 @@ const SideBar: React.FC = (props) => {
         onClick={() => {
           dispatch(fetchInventory());
         }}>
-        Fetch
+        Fetch from FakeStore API
       </StyledButton>
-      <StyledButton onClick={() => {}}>Fetch Users</StyledButton>
+      <StyledButton onClick={() => {}}>
+        Fetch Users from json placeholder
+      </StyledButton>
+      <StyledDangerousButton onClick={() => dispatch(handleResponse())}>
+        Fetch your doom
+      </StyledDangerousButton>
     </StyledSideBar>
   );
 };
