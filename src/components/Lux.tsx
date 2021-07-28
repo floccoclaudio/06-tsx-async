@@ -18,29 +18,23 @@ const StyledCommandsWrapper = styled("div")`
   display: flex;
   flex-direction: row;
 `;
-
 const StyledListsWrapper = styled("div")`
   & > * {
     box-sizing: border-box;
   }
 `;
-
 const StyledItemsList = styled("div")`
   width: 100%;
-  padding: 10px;
+  padding: 20px;
 `;
-
 const StyledTitle = styled("div")`
-  width: 100%;
   padding: 10px;
   text-align: center;
   background-color: black;
   color: white;
   font-size: 20px;
   font-weight: 400;
-  border: 1px solid black;
 `;
-
 const Content: React.FC = () => {
   // const luxItemList = useAppSelector(state => state.store.sroResponse)
   const products = useAppSelector((state) => state.sro.products);

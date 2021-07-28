@@ -1,6 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PreProcessedFileInfo } from 'typescript'
 //#region sro type
 
 // single product interface
@@ -13,7 +12,7 @@ export interface ProductDetailsItemsEntity {
     colorCode?: string | null;
     sizeCode?: string | null;
     brandCode: string;
-    epcCodes?: (EpcCodesEntity)[] | null;
+    epcCodes: (EpcCodesEntity)[];
     numberItems: number;
     price: number;
 }
@@ -25,16 +24,16 @@ export interface EpcCodesEntity {
 }
 
 export interface Sro {
-    productDetailsItems?: (ProductDetailsItemsEntity)[] | null;
+    productDetailsItems: (ProductDetailsItemsEntity)[];
 }
 //#endregion
 
 interface MainInitialStateType {
     sroResponse: Sro;
     products: {
-        notFound?: ProductDetailsItemsEntity[],
-        unexpected?: ProductDetailsItemsEntity[],
-        found?: ProductDetailsItemsEntity[]
+        notFound: ProductDetailsItemsEntity[],
+        unexpected: ProductDetailsItemsEntity[],
+        found: ProductDetailsItemsEntity[]
     }
 }
 
@@ -1324,77 +1323,90 @@ const initialMainState: MainInitialStateType = {
     }
 }
 
+interface ActionType {
+    product: ProductDetailsItemsEntity;
+    epcCode: string;
+}
+
 export const sroSlice = createSlice({
     name: 'mainSlice',
     initialState: initialMainState,
     reducers: {
         handleResponse: (state) => {
-            state.products.unexpected = state.sroResponse.productDetailsItems?.map(item => ({
+            state.products.unexpected = state.sroResponse.productDetailsItems.map(item => ({
                 ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "Missing")
             })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
-            state.products.notFound = state.sroResponse.productDetailsItems?.map(item => ({
+            state.products.notFound = state.sroResponse.productDetailsItems.map(item => ({
                 ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "In stock")
             })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
         },
+        addToFound: (state, action: PayloadAction<ActionType>) => {
+            const findIndex = (state.products.found.findIndex(code => code.upcCode === action.payload.product.upcCode))
+            if (findIndex === -1) {
+                const changedPayload = {
+                    ...action.payload.product,
+                    epcCodes: action.payload.product.epcCodes.map(targetCode => {
+                        if (targetCode.epcCode === action.payload.epcCode) {
+                            return { epcCode: action.payload.epcCode, epcStatus: 'Found' }
+
+                        } else {
+                            return {
+                                epcCode: targetCode.epcCode,
+                                epcStatus: targetCode.epcStatus
+                            }
+
+                        }
+                    }).filter(code => code.epcCode === action.payload.epcCode)
+                }
+
+                // const changedPayload = {
+                //     ...action.payload.product,
+                //     epcCodes: action.payload.product.epcCodes.map(() => ({
+                //         epcCode: action.payload.epcCode,
+                //         epcStatus: 'ahah'
+                //     }))
+                // }
+
+
+                state.products.found?.push(changedPayload)
+            } else {
+                state.products.found[findIndex].epcCodes.push({ epcCode: action.payload.epcCode, epcStatus: 'Found' })
+            }
+
+
+        },
+        removeFromNotFound: (state, action: PayloadAction<{ upcCode: string; epcCode: string }>) => {
+
+            const targetUpcIndex = state.products.notFound?.findIndex(code => code.upcCode === action.payload.upcCode);
+            // const targetUpc = state.products.notFound?.find(code => code.upcCode === action.payload.upcCode);
+            if (targetUpcIndex !== -1) {
+                state.products.notFound[targetUpcIndex].epcCodes = state.products.notFound[targetUpcIndex].epcCodes.filter(code => code.epcCode !== action.payload.epcCode)
+                if (state.products.notFound[targetUpcIndex].epcCodes.length === 0) {
+                    state.products.notFound.splice(targetUpcIndex, 1)
+                }
+            }
+            //check to remove upc if epc = []
+        }
     }
 }
 )
 
-export const { handleResponse } = sroSlice.actions
+export const { handleResponse, addToFound, removeFromNotFound } = sroSlice.actions
 export default sroSlice.reducer
 
 
 
 
 
-// state.sroResponse.productDetailsItems?.map((item) => {
-    //     item.epcCodes?.map((code) => {
-        //         switch (code.epcStatus) {
-            //             case 'Missing':
-            //                 state.products.unexpected.push({ epcCode: code.epcCode, epcStatus: code.epcStatus })
-            //                 break;
-            //             case 'In stock':
-            //                 state.products.notFound.push(code.epcCode)
-            //         }
-            //         // if (code.epcStatus === "Missing") {
-                //     state.products.found.push(code)
-                // }
-
-                // });
-                // })
-                //     const found = state.sroResponse.productDetailsItems!.filter(
-                    //         item => { 
-                        //             return item.epcCodes?.map(
-                            //                 code => { 
-                                //                     if (code.epcStatus === "Missing") { 
-                                    //                         return code.epcCode 
-                                    //                     } 
-                                    //                 }) 
-                                    //             }
-                                    //             )
-                                    //     state.products.found.push(found)
-                                    // }
-
-
-                                    // handleCodes:(state )=>{
-                                        //     state.sroResponse.productDetailsItems?.map(item =>{
-                                            //         item.epcCodes?.map(code => { 
-                                                //             if(code.epcStatus === "In stock"){
-                                                    //                 state.products.notFound.push(code.epcCode)
-                                                    //             } else if(code.epcStatus === "Missing"){
-                                                        //             workingObjects = {
-                                                            //                 ...workingObjects, missingStockCodes:
-                                                            //             }
-                                                            //         }
-                                                            //         return workingObjects
-                                                            //     }})
-
-                                                            //     })
-
-// piglia sro response da state => costruisci gli array
-        // handleFound: (state) => {
- //     state.products.notFound = state.sroResponse.productDetailsItems?.map(item => ({
-//         ...item, epcCodes: item.epcCodes?.filter((code) => code.epcStatus === "In stock")
-          //     }
-                                                            //     ))
-                                                            // }
+//solution number 1 by myself
+// const epcToRemove = state.products.notFound[targetUpcIndex].epcCodes?.findIndex(removeCode => removeCode.epcCode === action.payload.epcCode)
+// if (epcToRemove !== undefined) {
+// state.products.notFound[targetUpcIndex].epcCodes?.splice(epcToRemove, 1)
+// }
+//solution number II from boss avvolo avvolo
+// state.products.notFound[targetUpcIndex] = {
+//     ...targetUpc,
+//     epcCodes: targetUpc.epcCodes.filter(({ epcCode }) => epcCode !== action.payload.epcCode)
+// }
+//solutions III e IV by mast(r)oFratomoPasquale
+// state.products.notFound[targetUpcIndex].epcCodes = targetUpc.epcCodes.filter(code => code.epcCode !== action.payload.epcCode)

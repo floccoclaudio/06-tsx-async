@@ -1,11 +1,16 @@
 import React from "react";
-import { ProductDetailsItemsEntity } from "../features/sroSlice";
+import type {
+  ProductDetailsItemsEntity,
+  EpcCodesEntity,
+} from "../features/sroSlice";
+import { addToFound, removeFromNotFound } from "../features/sroSlice";
 import styled from "styled-components";
+import { useAppDispatch } from "../app/hooks";
 
 interface LuxItemProps {
   props: ProductDetailsItemsEntity;
 }
-
+//#region  styled components
 const StyledCardWrapper = styled("div")`
   border: 1px solid black;
   display: flex;
@@ -56,8 +61,18 @@ const StyledButton = styled("button")`
     color: white;
   }
 `;
-
+//#endregion
 const LuxItem: React.FC<LuxItemProps> = ({ props }) => {
+  const dispatch = useAppDispatch();
+
+  const handleClick = (code: EpcCodesEntity) => {
+    dispatch(addToFound({ product: props, epcCode: code.epcCode }));
+    dispatch(
+      //all props from obj                 only the code from target
+      removeFromNotFound({ upcCode: props.upcCode, epcCode: code.epcCode })
+    );
+  };
+
   return (
     <StyledCardWrapper>
       <StyledPropWrapper>
@@ -69,7 +84,9 @@ const LuxItem: React.FC<LuxItemProps> = ({ props }) => {
             return (
               <StyledCodeLine key={code.epcCode}>
                 <StyledEpcCode>{code.epcCode}</StyledEpcCode>
-                <StyledButton>Add to found</StyledButton>
+                <StyledButton onClick={() => handleClick(code)}>
+                  Add to found
+                </StyledButton>
               </StyledCodeLine>
             );
           })}
