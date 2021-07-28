@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PreProcessedFileInfo } from 'typescript'
 //#region sro type
 
 // single product interface
@@ -1322,6 +1323,11 @@ const initialMainState: MainInitialStateType = {
     }
 }
 
+interface ActionType {
+    product: ProductDetailsItemsEntity;
+    epcCode: string;
+}
+
 export const sroSlice = createSlice({
     name: 'mainSlice',
     initialState: initialMainState,
@@ -1334,27 +1340,52 @@ export const sroSlice = createSlice({
                 ...item, epcCodes: item.epcCodes?.filter(code => code.epcStatus === "In stock")
             })).filter(notEmpty => notEmpty.epcCodes?.length !== 0)
         },
-        addToFound: (state, action: PayloadAction<ProductDetailsItemsEntity>) => {
-            state.products.found?.push(action.payload)
+        addToFound: (state, action: PayloadAction<ActionType>) => {
+            const findIndex = (state.products.found.findIndex(code => code.upcCode === action.payload.product.upcCode))
+            if (findIndex === -1) {
+                const changedPayload = {
+                    ...action.payload.product,
+                    epcCodes: action.payload.product.epcCodes.map(targetCode => {
+                        if (targetCode.epcCode === action.payload.epcCode) {
+                            return { epcCode: action.payload.epcCode, epcStatus: 'Found' }
+
+                        } else {
+                            return {
+                                epcCode: targetCode.epcCode,
+                                epcStatus: targetCode.epcStatus
+                            }
+
+                        }
+                    }).filter(code => code.epcCode === action.payload.epcCode)
+                }
+
+                // const changedPayload = {
+                //     ...action.payload.product,
+                //     epcCodes: action.payload.product.epcCodes.map(() => ({
+                //         epcCode: action.payload.epcCode,
+                //         epcStatus: 'ahah'
+                //     }))
+                // }
+
+
+                state.products.found?.push(changedPayload)
+            } else {
+                state.products.found[findIndex].epcCodes.push({ epcCode: action.payload.epcCode, epcStatus: 'Found' })
+            }
+
+
         },
         removeFromNotFound: (state, action: PayloadAction<{ upcCode: string; epcCode: string }>) => {
 
             const targetUpcIndex = state.products.notFound?.findIndex(code => code.upcCode === action.payload.upcCode);
             // const targetUpc = state.products.notFound?.find(code => code.upcCode === action.payload.upcCode);
-
-
             if (targetUpcIndex !== -1) {
-                // const epcToRemove = state.products.notFound[targetUpcIndex].epcCodes?.findIndex(removeCode => removeCode.epcCode === action.payload.epcCode)
-                // if (epcToRemove !== undefined) {
-                // state.products.notFound[targetUpcIndex].epcCodes?.splice(epcToRemove, 1)
-                // }
-                // state.products.notFound[targetUpcIndex] = {
-                //     ...targetUpc,
-                //     epcCodes: targetUpc.epcCodes.filter(({ epcCode }) => epcCode !== action.payload.epcCode)
-                // }
-                // state.products.notFound[targetUpcIndex].epcCodes = targetUpc.epcCodes.filter(code => code.epcCode !== action.payload.epcCode)
                 state.products.notFound[targetUpcIndex].epcCodes = state.products.notFound[targetUpcIndex].epcCodes.filter(code => code.epcCode !== action.payload.epcCode)
+                if (state.products.notFound[targetUpcIndex].epcCodes.length === 0) {
+                    state.products.notFound.splice(targetUpcIndex, 1)
+                }
             }
+            //check to remove upc if epc = []
         }
     }
 }
@@ -1364,3 +1395,18 @@ export const { handleResponse, addToFound, removeFromNotFound } = sroSlice.actio
 export default sroSlice.reducer
 
 
+
+
+
+//solution number 1 by myself
+// const epcToRemove = state.products.notFound[targetUpcIndex].epcCodes?.findIndex(removeCode => removeCode.epcCode === action.payload.epcCode)
+// if (epcToRemove !== undefined) {
+// state.products.notFound[targetUpcIndex].epcCodes?.splice(epcToRemove, 1)
+// }
+//solution number II from boss avvolo avvolo
+// state.products.notFound[targetUpcIndex] = {
+//     ...targetUpc,
+//     epcCodes: targetUpc.epcCodes.filter(({ epcCode }) => epcCode !== action.payload.epcCode)
+// }
+//solutions III e IV by mast(r)oFratomoPasquale
+// state.products.notFound[targetUpcIndex].epcCodes = targetUpc.epcCodes.filter(code => code.epcCode !== action.payload.epcCode)

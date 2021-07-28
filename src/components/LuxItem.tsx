@@ -66,12 +66,7 @@ const LuxItem: React.FC<LuxItemProps> = ({ props }) => {
   const dispatch = useAppDispatch();
 
   const handleClick = (code: EpcCodesEntity) => {
-    dispatch(
-      addToFound({
-        ...props,
-        epcCodes: [{ epcCode: code.epcCode, epcStatus: code.epcStatus }],
-      })
-    );
+    dispatch(addToFound({ product: props, epcCode: code.epcCode }));
     dispatch(
       //all props from obj                 only the code from target
       removeFromNotFound({ upcCode: props.upcCode, epcCode: code.epcCode })
