@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Content from "./Content";
-import Shop from "./Shop";
+// import Shop from "./Shop";
+// import Lux from "./Lux";
 import SideBar from "./SideBar";
-import Lux from "./Lux";
 import { useAppSelector } from "../app/hooks";
 import Ex01 from "./Ex01";
 

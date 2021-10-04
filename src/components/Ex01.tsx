@@ -9,16 +9,6 @@ const Ex01: React.FC = () => {
     <>
       {exOneItems.map((item) => {
         return <ItemCard {...item} />;
-        // return (
-        //   <p key={item.upcCode}>
-        //     {item.brandCode} brand Code
-        //     {item.upcCode} upc Code
-        //     {item.modelCode} model Code
-        //     {item.epcCodes.map((singleCode) => {
-        //       console.log(singleCode.epcStatus);
-        //     })}
-        //   </p>
-        // );
       })}
     </>
   );

@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-
 //#region sro type
-
 // single product interface
 export interface ProductDetailsItemsEntity {
     brandDescription: string;
@@ -17,13 +15,11 @@ export interface ProductDetailsItemsEntity {
     numberItems: number;
     price: number;
 }
-
 //epcCodes
 export interface EpcCodesEntity {
     epcCode: string;
     epcStatus: string;
 }
-
 export interface Sro {
     productDetailsItems: (ProductDetailsItemsEntity)[];
 }
@@ -1329,8 +1325,6 @@ const initialMainState: MainInitialStateType = {
     }
 }
 
-
-
 export const syncReducer = createSlice({
     name: 'mainSlice',
     initialState: initialMainState,
@@ -1348,12 +1342,15 @@ export const syncReducer = createSlice({
                     }
                 )
             )
+        },
+        resetAll: (state) => {
+            state.esercizi = initialMainState.esercizi
         }
     }
 }
 )
 
-export const { moveSomeItems } = syncReducer.actions
+export const { moveSomeItems, resetAll } = syncReducer.actions
 export default syncReducer.reducer
 
 

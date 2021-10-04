@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useAppDispatch } from "../app/hooks";
 // import { fetchInventory } from "../features/mainSlice";
-import { moveSomeItems } from "../features/provaSyncReducer";
+import { moveSomeItems, resetAll } from "../features/provaSyncReducer";
 
 const StyledSideBar = styled("div")`
   background-color: #000000;
@@ -52,6 +52,9 @@ const SideBar: React.FC = (props) => {
       <StyledButton onClick={() => {}}>ex03</StyledButton>
       <StyledButton onClick={() => {}}>ex04</StyledButton>
       <StyledButton onClick={() => {}}>ex05</StyledButton>
+      <StyledButton onClick={() => dispatch(resetAll())}>
+        Reset All
+      </StyledButton>
     </StyledSideBar>
   );
 };
