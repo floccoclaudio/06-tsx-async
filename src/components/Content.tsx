@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 const StyledContentDiv = styled("div")`
-  background-color: #f8ffe5;
+  background-color: #f8f8f8;
   border: 1px solid black;
   padding: 20px;
   margin: 5px;
