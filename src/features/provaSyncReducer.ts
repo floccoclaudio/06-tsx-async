@@ -1337,7 +1337,17 @@ export const syncReducer = createSlice({
     reducers: {
         moveSomeItems: (state) => {
             // state.esercizi.ex01 = state.sro.productDetailsItems.map((item)=> item.epcCodes.map((epc)=> epc.epcStatus.filter((code)=> {code === 'In stock'}))
-            state.esercizi.ex01 = state.sro.productDetailsItems.filter((item) => item.sizeCode !== null)
+            // state.esercizi.ex01 = state.sro.productDetailsItems.filter((item) => item.sizeCode !== null)
+            state.esercizi.ex01 = state.sro.productDetailsItems.map(
+                (item) => (
+                    {
+                        ...item,
+                        epcCodes: item.epcCodes.filter(
+                            (epcCode) => epcCode.epcStatus === 'In stock'
+                        )
+                    }
+                )
+            )
         }
     }
 }
