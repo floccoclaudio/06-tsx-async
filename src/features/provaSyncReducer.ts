@@ -30,10 +30,9 @@ interface MainInitialStateType {
     esercizi: {
         ex01: ProductDetailsItemsEntity[],
         ex02: ProductDetailsItemsEntity[],
-        ex03: ProductDetailsItemsEntity[]
-        ex04: ProductDetailsItemsEntity[]
+        ex03: ProductDetailsItemsEntity[],
+        ex04: ProductDetailsItemsEntity[],
         ex05: ProductDetailsItemsEntity[]
-
     }
 }
 
@@ -1330,8 +1329,6 @@ export const syncReducer = createSlice({
     initialState: initialMainState,
     reducers: {
         moveSomeItems: (state) => {
-            // state.esercizi.ex01 = state.sro.productDetailsItems.map((item)=> item.epcCodes.map((epc)=> epc.epcStatus.filter((code)=> {code === 'In stock'}))
-            // state.esercizi.ex01 = state.sro.productDetailsItems.filter((item) => item.sizeCode !== null)
             state.esercizi.ex01 = state.sro.productDetailsItems.map(
                 (item) => (
                     {
@@ -1346,6 +1343,9 @@ export const syncReducer = createSlice({
         resetAll: (state) => {
             state.esercizi = initialMainState.esercizi
         }
+        // removeFromSlice: (state)=>{
+        //     state.esercizi.ex01
+        // }
     }
 }
 )

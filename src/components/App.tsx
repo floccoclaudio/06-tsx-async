@@ -2,10 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import Content from "./Content";
 // import Shop from "./Shop";
-// import Lux from "./Lux";
+import Lux from "./Lux";
 import SideBar from "./SideBar";
 import { useAppSelector } from "../app/hooks";
 import Ex01 from "./Ex01";
+import Ex02 from "./Ex02";
+import Ex03 from "./Ex03";
+import Ex04 from "./Ex04";
+import Ex05 from "./Ex05";
 
 const StyledAppWrapper = styled("div")`
   display: grid;
@@ -16,20 +20,25 @@ const StyledAppWrapper = styled("div")`
 `;
 
 const App: React.FC = () => {
-  const store = useAppSelector((state) => state.store);
+  // const store = useAppSelector((state) => state.store);
   const ex01 = useAppSelector((state) => state.syncReducer.esercizi.ex01);
-  //   const ex02 = useAppSelector((state) => state.syncReducer.esercizi.ex02);
-  // const ex03 = useAppSelector(state => state.syncReducer)
-  // const ex04 = useAppSelector(state => state.syncReducer)
-  // const ex05 = useAppSelector(state => state.syncReducer)
+  const ex02 = useAppSelector((state) => state.syncReducer.esercizi.ex02);
+  const ex03 = useAppSelector((state) => state.syncReducer.esercizi.ex03);
+  const ex04 = useAppSelector((state) => state.syncReducer.esercizi.ex04);
+  const ex05 = useAppSelector((state) => state.syncReducer.esercizi.ex05);
+
   //funzione render component
   return (
     <StyledAppWrapper>
-      <SideBar></SideBar>
+      <SideBar />
       <Content>
         {/* {store.isSuccess && <Shop />} */}
-        {/* <Lux /> */}
+        <Lux />
         {ex01.length !== 0 && <Ex01 />}
+        {ex02.length !== 0 && <Ex02 />}
+        {ex03.length !== 0 && <Ex03 />}
+        {ex04.length !== 0 && <Ex04 />}
+        {ex05.length !== 0 && <Ex05 />}
       </Content>
     </StyledAppWrapper>
   );

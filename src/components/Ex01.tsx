@@ -7,6 +7,7 @@ const Ex01: React.FC = () => {
 
   return (
     <>
+      <h1>In stock : </h1>
       {exOneItems.map((item) => {
         return <ItemCard {...item} />;
       })}
