@@ -33,7 +33,7 @@ const App: React.FC = () => {
       <SideBar />
       <Content>
         {/* {store.isSuccess && <Shop />} */}
-        <Lux />
+        {/* <Lux /> */}
         {ex01.length !== 0 && <Ex01 />}
         {ex02.length !== 0 && <Ex02 />}
         {ex03.length !== 0 && <Ex03 />}

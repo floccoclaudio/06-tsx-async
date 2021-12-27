@@ -26,7 +26,7 @@ export const fetchInventory = createAsyncThunk<ProductType[], void, { state: Roo
     'fetchItems', async () => {
         try {
             let response = await fetch('https://fakestoreapi.com/products')
-            return response.json()
+            return (response.json())
         } catch (err) {
             return err as string
         }
